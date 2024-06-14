@@ -24,6 +24,7 @@ def predict_dates(start_date, growth_stages, gdd_data):
     stage_dates = {}
     for gdd_entry in gdd_data:
         cumulative_gdd += gdd_entry['GDD']
+        cumulative_gdd = round(cumulative_gdd, 2)  # Round to 2 decimal places
         for stage, (start_gdd, end_gdd) in growth_stages.items():
             if start_gdd <= cumulative_gdd < end_gdd:
                 stage_dates[stage] = gdd_entry['date']
