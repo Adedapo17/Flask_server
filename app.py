@@ -35,8 +35,7 @@ def predict_gdd():
 
     growth_stages = crop_database[crop]['growth_stages']
     predictions = predict_dates(start_date, growth_stages, gdd_data)
-    cumulative_GDD = sum([entry['GDD'] for entry in gdd_data])
-    cumulative_GDD = round(cumulative_GDD, 2)  # Round to 2 decimal places
+    cumulative_GDD = round(sum([entry['GDD'] for entry in gdd_data]))
 
     current_stage = "Unknown"
     next_stage = "Unknown"
@@ -53,10 +52,7 @@ def predict_gdd():
                 next_stage = "Maturity/Harvest"
             break
 
-    pest_info = [
-        pest for pest in crop_database[crop]['pests_info']
-        if pest['GDD_stage'][0] <= cumulative_GDD < pest['GDD_stage'][1]
-    ]
+    pest_info = [pest for pest in crop_database[crop]['pests_info'] if pest['GDD_stage'][0] <= cumulative_GDD < pest['GDD_stage'][1]]
     practices = crop_database[crop]['agricultural_practices'].get(current_stage, [])
 
     response = {
@@ -72,5 +68,5 @@ def predict_gdd():
 
     return jsonify(response)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
