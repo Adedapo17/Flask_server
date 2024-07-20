@@ -68,17 +68,3 @@ def predict_dates(start_date, growth_stages, gdd_data):
                     stage_dates[stage] = future_date.strftime("%Y-%m-%d")
     
     return stage_dates
-
-# Example usage
-start_date = "2023-04-01"
-end_date = "2023-07-01"
-growth_stages = {
-    "Stage 1": (0, 100),
-    "Stage 2": (100, 200),
-    "Stage 3": (200, 300),
-    "Maturity/Harvest": (300, float('inf'))
-}
-
-gdd_data = calculate_gdd(start_date, end_date)
-predicted_dates = predict_dates(start_date, growth_stages, gdd_data)
-print(predicted_dates)
