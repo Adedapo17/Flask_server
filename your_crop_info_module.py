@@ -104,17 +104,17 @@ crop_database = {
     "maize": {
         "growth_stages": {
             "Germination": (0, 120),
-            "Seedling Stage": (120, 250),
-            "Vegetative Growth": (250, 500),
-            "Tasseling": (500, 700),
-            "Silking": (700, 850),
-            "Grain Filling": (850, 1200),
-            "Maturity/Harvest": (1200, 1500)
+            "Seedling Stage": (120, 475),
+            "Vegetative Growth": (475, 950),
+            "Tasseling": (950, 1200),
+            "Silking": (1200, 1600),
+            "Grain Filling": (1600, 2450),
+            "Maturity/Harvest": (2450, 2700)
         },
         "pests_info": [
             {
                 "pest": "Fall Armyworm (Spodoptera frugiperda)",
-                "GDD_stage": (0, 1500),
+                "GDD_stage": (0, 2500),
                 "symptoms": "Leaf holes, feeding on kernels.",
                 "control_options": ["Use pheromone traps and biological pesticides like Bt.", "Encourage natural predators like parasitic wasps."]
             },
@@ -126,7 +126,7 @@ crop_database = {
             },
             {
                 "pest": "Corn Earworm (Helicoverpa zea)",
-                "GDD_stage": (700, 1500),
+                "GDD_stage": (700, 2500),
                 "symptoms": "Damage to ears, feeding on kernels.",
                 "control_options": ["Handpick and destroy larvae.", "Use pheromone traps and biological pesticides like Bt."]
             }
@@ -149,7 +149,7 @@ crop_database = {
             "Flowering": (400, 600),
             "Pod Formation": (600, 800),
             "Pod Filling": (800, 1000),
-            "Maturity/Harvest": (1000, 1200)
+            "Maturity/Harvest": (1000, 1300)
         },
         "pests_info": [
             {
@@ -187,9 +187,9 @@ crop_database = {
             "Seedling Stage": (80, 160),
             "Vegetative Growth": (160, 400),
             "Panicle Initiation": (400, 600),
-            "Flowering": (600, 800),
-            "Grain Filling": (800, 1000),
-            "Maturity/Harvest": (1000, 1200)
+            "Flowering": (600, 900),
+            "Grain Filling": (900, 1400),
+            "Maturity/Harvest": (1400, 1900)
         },
         "pests_info": [
             {
@@ -200,13 +200,13 @@ crop_database = {
             },
             {
                 "pest": "Greenbug (Schizaphis graminum)",
-                "GDD_stage": (0, 1200),
+                "GDD_stage": (0, 1500),
                 "symptoms": "Yellowing, stunted growth.",
                 "control_options": ["Introduce natural predators like ladybugs.", "Use insecticidal soaps or neem oil."]
             },
             {
                 "pest": "Armyworm (Spodoptera spp.)",
-                "GDD_stage": (0, 1200),
+                "GDD_stage": (0, 1500),
                 "symptoms": "Defoliation, feeding on grains.",
                 "control_options": ["Use pheromone traps and biological pesticides like Bt.", "Encourage natural predators like parasitic wasps."]
             }
