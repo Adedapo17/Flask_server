@@ -38,7 +38,8 @@ def predict_gdd():
     cumulative_GDD = round(sum([entry['GDD'] for entry in gdd_data]))
 
     current_stage = "Unknown"
-    next_stage = "Unknown"
+    next_stage = ""
+
     for stage, (start_gdd, end_gdd) in growth_stages.items():
         if start_gdd <= cumulative_GDD < end_gdd:
             current_stage = stage
@@ -49,8 +50,12 @@ def predict_gdd():
                     next_stage_found = True
                     break
             if not next_stage_found:
-                next_stage = "Maturity/Harvest"
+                next_stage = ""
             break
+    else:
+        if cumulative_GDD >= max(end_gdd for _, end_gdd in growth_stages.values()):
+            current_stage = "Maturity/Harvest"
+            next_stage = ""
 
     pest_info = [pest for pest in crop_database[crop]['pests_info'] if pest['GDD_stage'][0] <= cumulative_GDD < pest['GDD_stage'][1]]
     practices = crop_database[crop]['agricultural_practices'].get(current_stage, [])
