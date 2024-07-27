@@ -1,8 +1,8 @@
 crop_database = {
     "rice": {
         "growth_stages": {
-            "Germination": (0, 100),
-            "Seedling": (100, 200),
+            "Germination": (100),
+            "Seedling": (101, 200),
             "Vegetative Growth": (200, 600),
             "Panicle Initiation": (600, 900),
             "Booting": (900, 1100),
@@ -45,8 +45,8 @@ crop_database = {
     },
     "tomato": {
         "growth_stages": {
-            "Germination": (0, 150),
-            "Seedling Stage": (150, 300),
+            "Germination": (150),
+            "Seedling Stage": (151, 300),
             "Vegetative Growth": (300, 700),
             "Flowering": (700, 1000),
             "Fruit Set": (1000, 1200),
@@ -103,8 +103,8 @@ crop_database = {
     },
     "maize": {
         "growth_stages": {
-            "Germination": (0, 120),
-            "Seedling Stage": (120, 475),
+            "Germination": (120),
+            "Seedling Stage": (121, 475),
             "Vegetative Growth": (475, 950),
             "Tasseling": (950, 1200),
             "Silking": (1200, 1600),
@@ -114,7 +114,7 @@ crop_database = {
         "pests_info": [
             {
                 "pest": "Fall Armyworm (Spodoptera frugiperda)",
-                "GDD_stage": (0, 2500),
+                "GDD_stage": (0, 2700),
                 "symptoms": "Leaf holes, feeding on kernels.",
                 "control_options": ["Use pheromone traps and biological pesticides like Bt.", "Encourage natural predators like parasitic wasps."]
             },
@@ -126,7 +126,7 @@ crop_database = {
             },
             {
                 "pest": "Corn Earworm (Helicoverpa zea)",
-                "GDD_stage": (700, 2500),
+                "GDD_stage": (700, 2700),
                 "symptoms": "Damage to ears, feeding on kernels.",
                 "control_options": ["Handpick and destroy larvae.", "Use pheromone traps and biological pesticides like Bt."]
             }
@@ -143,8 +143,8 @@ crop_database = {
     },
     "beans": {
         "growth_stages": {
-            "Germination": (0, 100),
-            "Seedling Stage": (100, 200),
+            "Germination": (100),
+            "Seedling Stage": (101, 200),
             "Vegetative Growth": (200, 400),
             "Flowering": (400, 600),
             "Pod Formation": (600, 800),
@@ -183,8 +183,8 @@ crop_database = {
     },
     "millet": {
         "growth_stages": {
-            "Germination": (0, 80),
-            "Seedling Stage": (80, 160),
+            "Germination": (80),
+            "Seedling Stage": (81, 160),
             "Vegetative Growth": (160, 400),
             "Panicle Initiation": (400, 600),
             "Flowering": (600, 900),
@@ -200,13 +200,13 @@ crop_database = {
             },
             {
                 "pest": "Greenbug (Schizaphis graminum)",
-                "GDD_stage": (0, 1500),
+                "GDD_stage": (0, 1900),
                 "symptoms": "Yellowing, stunted growth.",
                 "control_options": ["Introduce natural predators like ladybugs.", "Use insecticidal soaps or neem oil."]
             },
             {
                 "pest": "Armyworm (Spodoptera spp.)",
-                "GDD_stage": (0, 1500),
+                "GDD_stage": (0, 1900),
                 "symptoms": "Defoliation, feeding on grains.",
                 "control_options": ["Use pheromone traps and biological pesticides like Bt.", "Encourage natural predators like parasitic wasps."]
             }
