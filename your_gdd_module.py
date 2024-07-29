@@ -2,11 +2,7 @@ import requests
 from datetime import datetime, timedelta
 
 def calculate_gdd(start_date, end_date, latitude, longitude):
-    url = (f'https://archive-api.open-meteo.com/v1/archive'
-           f'?latitude={latitude}&longitude={longitude}'
-           f'&start_date={start_date}&end_date={end_date}'
-           f'&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum'
-           f'&timezone=auto')
+    url = f'https://archive-api.open-meteo.com/v1/archive?latitude={latitude}&longitude={longitude}&start_date={start_date}&end_date={end_date}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum&timezone=auto'
     
     try:
         response = requests.get(url)
