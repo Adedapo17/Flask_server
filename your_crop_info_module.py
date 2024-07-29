@@ -11,6 +11,12 @@ crop_database = {
             "Grain Filling": (1500, 1900),
             "Maturity/Harvest": (1900, 2200)
         },
+        "water_requirements": {
+            "Seedling": (2000000, 3000000), # litres/hectare
+            "Vegetative Growth": (3000000, 4000000), 
+            "Panicle Initiation, Booting, Heading, Flowering and Grain Filling": (4000000, 5000000),
+            "Maturity/Harvest":(1500000, 2000000),
+        },
         "pests_info": [
             {
                 "pest": "Rice Stem Borer (Scirpophaga incertulas)",
@@ -41,7 +47,7 @@ crop_database = {
             "Flowering": ["Avoid water stress", "Protect against fungal diseases"],
             "Grain Filling": ["Continue proper irrigation", "Apply appropriate pest management strategies"],
             "Maturity/Harvest": ["Reduce water before harvest to ease threshing", "Harvest at the right moisture content to avoid grain loss"]
-        }
+        }       
     },
     "tomato": {
         "growth_stages": {
@@ -52,6 +58,13 @@ crop_database = {
             "Fruit Set": (1000, 1200),
             "Fruit Growth": (1200, 1600),
             "Maturity/Harvest": (1600, 1900)
+        },
+        "water_requirements": {
+            "Seedling Stage": (1000000, 1500000), # litres/hectare
+            "Vegetative Growth": (1500000, 2000000), 
+            "Flowering": (2000000, 2500000),
+            "Fruit Set": (2500000, 3000000),
+            "Maturity/Harvest":(1500000, 2000000),
         },
         "pests_info": [
             { 
@@ -111,6 +124,13 @@ crop_database = {
             "Grain Filling": (1600, 2400),
             "Maturity/Harvest": (2400, 2700)
         },
+        "water_requirements": {
+            "Seedling Stage": (1000000, 1500000), # litres/hectare
+            "Vegetative Growth": (1500000, 2500000), 
+            "Tasseling and Silking": (2500000, 3500000),
+            "Grain Filling": (2500000, 3500000),
+            "Maturity/Harvest":(1000000, 1500000),
+        }, 
         "pests_info": [
             {
                 "pest": "Fall Armyworm (Spodoptera frugiperda)",
@@ -151,6 +171,13 @@ crop_database = {
             "Pod Filling": (800, 1000),
             "Maturity/Harvest": (1000, 1300)
         },
+        "water_requirements": {
+            "Seedling Stage": (1103000, 1646000), # litres/hectare
+            "Vegetative Growth": (1646000, 2200000), 
+            "Flowering": (2200000, 2755000),
+            "Pod Formation and Pod Filling": (2000000, 2200000),
+            "Maturity/Harvest":(1103000, 1646000),
+        }, 
         "pests_info": [
             {
                 "pest": "Bean Aphid (Aphis fabae)",
@@ -191,6 +218,13 @@ crop_database = {
             "Grain Filling": (900, 1400),
             "Maturity/Harvest": (1400, 1900)
         },
+        "water_requirements": {
+            "Seedling Stage": (1000000, 1500000), # litres/hectare
+            "Vegetative Growth": (1500000, 2000000), 
+            "Flowering": (1500000, 2000000),
+            "Grain Filling": (1500000, 2000000),
+            "Maturity/Harvest":(1000000, 1500000),
+        }, 
         "pests_info": [
             {
                 "pest": "Millet Stem Borer (Coniesta ignefusalis)",

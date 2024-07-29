@@ -1,26 +1,28 @@
 import requests
 from datetime import datetime, timedelta
 
-def calculate_gdd(start_date, end_date):
+def calculate_gdd_and_water(start_date, end_date):
     url = f'https://archive-api.open-meteo.com/v1/archive?latitude=8.44&longitude=4.494&start_date={start_date}&end_date={end_date}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum&timezone=auto'
+    
     try:
         response = requests.get(url)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"Error fetching weather data: {e}")
-        return []
+        return [], []
 
     try:
         weather_data = response.json()
     except ValueError as e:
         print(f"Error parsing weather data: {e}")
-        return []
+        return [], []
 
-    if 'daily' not in weather_data or 'time' not in weather_data['daily'] or 'temperature_2m_max' not in weather_data['daily'] or 'temperature_2m_min' not in weather_data['daily']:
+    if 'daily' not in weather_data or any(key not in weather_data['daily'] for key in ['time', 'temperature_2m_max', 'temperature_2m_min', 'precipitation_sum', 'rain_sum']):
         print("Invalid weather data format")
-        return []
+        return [], []
 
     gdd_data = []
+    water_data = []
     daily_data = weather_data['daily']
     
     for i in range(len(daily_data['time'])):
@@ -28,19 +30,25 @@ def calculate_gdd(start_date, end_date):
         try:
             max_temp = daily_data['temperature_2m_max'][i]
             min_temp = daily_data['temperature_2m_min'][i]
+            precipitation = daily_data['precipitation_sum'][i]
+            rain = daily_data['rain_sum'][i]
         except (IndexError, KeyError) as e:
-            print(f"Missing temperature data for date {date}: {e}")
+            print(f"Missing data for date {date}: {e}")
             continue
 
-        if max_temp is None or min_temp is None:
-            print(f"Incomplete temperature data for date {date}")
+        if max_temp is None or min_temp is None or precipitation is None or rain is None:
+            print(f"Incomplete data for date {date}")
             continue
 
         gdd = (max_temp + min_temp) / 2 - 10
         gdd = max(0, gdd)  # GDD cannot be negative
         gdd_data.append({"date": date, "GDD": gdd})
+        
+        # Total water collected from precipitation and rain (litres/hectare)
+        water_collected = (precipitation + rain) * 10  # Convert mm to litres/hectare
+        water_data.append({"date": date, "water_collected": water_collected})
     
-    return gdd_data
+    return gdd_data, water_data
 
 def predict_dates(start_date, growth_stages, gdd_data):
     cumulative_gdd = 0
@@ -67,3 +75,10 @@ def predict_dates(start_date, growth_stages, gdd_data):
                     stage_dates[stage] = future_date.strftime("%Y-%m-%d")
     
     return stage_dates
+
+def calculate_irrigation_water(water_data, start_date, end_date, water_requirements):
+    total_water_collected = sum(entry['water_collected'] for entry in water_data)
+    required_water = water_requirements.get("Maturity/Harvest", 0)
+    irrigation_needed = max(0, required_water - total_water_collected)
+    
+    return irrigation_needed
