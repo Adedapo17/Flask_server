@@ -31,6 +31,9 @@ def predict_gdd():
             return jsonify({"error": "GDD data is empty or invalid"}), 500
 
         growth_stages = crop_database[crop]['growth_stages']
+        if not all(isinstance(value, (tuple, list)) and len(value) == 2 for value in growth_stages.values()):
+            return jsonify({"error": "Invalid growth stages format"}), 500
+
         predictions = predict_dates(start_date, growth_stages, gdd_data)
         cumulative_GDD = round(sum([entry['GDD'] for entry in gdd_data]))
 

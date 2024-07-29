@@ -1,7 +1,7 @@
 crop_database = {
     "rice": {
         "growth_stages": {
-            "Germination": (100),
+            "Germination": (50, 100),
             "Seedling": (101, 200),
             "Vegetative Growth": (200, 600),
             "Panicle Initiation": (600, 900),
@@ -45,7 +45,7 @@ crop_database = {
     },
     "tomato": {
         "growth_stages": {
-            "Germination": (150),
+            "Germination": (50, 150),
             "Seedling Stage": (151, 300),
             "Vegetative Growth": (300, 700),
             "Flowering": (700, 1000),
@@ -103,7 +103,7 @@ crop_database = {
     },
     "maize": {
         "growth_stages": {
-            "Germination": (120),
+            "Germination": (50, 120),
             "Seedling Stage": (121, 475),
             "Vegetative Growth": (475, 950),
             "Tasseling": (950, 1200),
@@ -143,7 +143,7 @@ crop_database = {
     },
     "beans": {
         "growth_stages": {
-            "Germination": (100),
+            "Germination": (50, 100),
             "Seedling Stage": (101, 200),
             "Vegetative Growth": (200, 400),
             "Flowering": (400, 600),
@@ -183,7 +183,7 @@ crop_database = {
     },
     "millet": {
         "growth_stages": {
-            "Germination": (80),
+            "Germination": (40, 80),
             "Seedling Stage": (81, 160),
             "Vegetative Growth": (160, 400),
             "Panicle Initiation": (400, 600),
