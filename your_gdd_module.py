@@ -2,8 +2,7 @@ import requests
 from datetime import datetime, timedelta
 
 def calculate_gdd(start_date, end_date):
-    url = f'https://archive-api.open-meteo.com/v1/archive?latitude=8.44&longitude=4.494&start_date={start_date}&end_date={end_date}&daily=temperature_2m_max,temperature_2m_min&timezone=auto'
-    
+    url = f'https://archive-api.open-meteo.com/v1/archive?latitude=8.44&longitude=4.494&start_date={start_date}&end_date={end_date}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum&timezone=auto'
     try:
         response = requests.get(url)
         response.raise_for_status()
