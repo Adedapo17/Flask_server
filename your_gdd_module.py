@@ -23,7 +23,6 @@ def calculate_gdd(start_date, end_date, latitude, longitude):
         return [], []
 
     gdd_data = []
-    water_data = []
     daily_data = weather_data['daily']
     
     for i in range(len(daily_data['time'])):
@@ -74,5 +73,20 @@ def predict_dates(start_date, growth_stages, gdd_data):
     
     return stage_dates
 
+# Example usage
+start_date = "2023-05-01"
+end_date = "2023-07-01"
+latitude = 40.7128  # Example: Latitude for New York City
+longitude = -74.0060  # Example: Longitude for New York City
 
+gdd_data, = calculate_gdd(start_date, end_date, latitude, longitude)
+print(gdd_data)
 
+growth_stages = {
+    "stage_1": (0, 100),
+    "stage_2": (100, 200),
+    "stage_3": (200, 300)
+}
+
+stage_dates = predict_dates(start_date, growth_stages, gdd_data)
+print(stage_dates)
