@@ -11,12 +11,6 @@ crop_database = {
             "Grain Filling": (1500, 1900),
             "Maturity/Harvest": (1900, 2200)
         },
-        "water_requirements": {
-            "Seedling": (2000000, 3000000), # litres/hectare
-            "Vegetative Growth": (3000000, 4000000), 
-            "Panicle Initiation, Booting, Heading, Flowering and Grain Filling": (4000000, 5000000),
-            "Maturity/Harvest":(1500000, 2000000),
-        },
         "pests_info": [
             {
                 "pest": "Rice Stem Borer (Scirpophaga incertulas)",
@@ -47,7 +41,8 @@ crop_database = {
             "Flowering": ["Avoid water stress", "Protect against fungal diseases"],
             "Grain Filling": ["Continue proper irrigation", "Apply appropriate pest management strategies"],
             "Maturity/Harvest": ["Reduce water before harvest to ease threshing", "Harvest at the right moisture content to avoid grain loss"]
-        }       
+        },
+        "water_requirements": (10500000, 14000000)  # in litres per hectare       
     },
     "tomato": {
         "growth_stages": {
@@ -58,13 +53,6 @@ crop_database = {
             "Fruit Set": (1000, 1200),
             "Fruit Growth": (1200, 1600),
             "Maturity/Harvest": (1600, 1900)
-        },
-        "water_requirements": {
-            "Seedling Stage": (1000000, 1500000), # litres/hectare
-            "Vegetative Growth": (1500000, 2000000), 
-            "Flowering": (2000000, 2500000),
-            "Fruit Set": (2500000, 3000000),
-            "Maturity/Harvest":(1500000, 2000000),
         },
         "pests_info": [
             { 
@@ -112,7 +100,8 @@ crop_database = {
             "Fruit Set": ["Continue consistent watering.", "Support branches with heavy fruit load."],
             "Fruit Growth": ["Ensure adequate water and nutrients.", "Monitor for pests and diseases."],
             "Maturity/Harvest": ["Reduce watering to prevent fruit splitting.", "Harvest fruits at optimal ripeness."]
-        }
+        },
+        "water_requirements": (8500000, 12700000)  # in litres per hectare       
     },
     "maize": {
         "growth_stages": {
@@ -123,13 +112,6 @@ crop_database = {
             "Silking": (1200, 1600),
             "Grain Filling": (1600, 2400),
             "Maturity/Harvest": (2400, 2700)
-        },
-        "water_requirements": {
-            "Seedling Stage": (1000000, 1500000), # litres/hectare
-            "Vegetative Growth": (1500000, 2500000), 
-            "Tasseling and Silking": (2500000, 3500000),
-            "Grain Filling": (2500000, 3500000),
-            "Maturity/Harvest":(1000000, 1500000),
         }, 
         "pests_info": [
             {
@@ -159,7 +141,8 @@ crop_database = {
             "Silking": ["Ensure good pollination conditions.", "Protect against pests like corn earworms."],
             "Grain Filling": ["Continue irrigation to support kernel development.", "Apply late-season nitrogen if necessary.", "Protect against fungal infections."],
             "Maturity/Harvest": ["Reduce water before harvest.", "Harvest at the correct moisture content to avoid losses.", "Store properly to avoid post-harvest pests."]
-        }
+        },
+        "water_requirements": (8500000, 12500000)  # in litres per hectare       
     },
     "beans": {
         "growth_stages": {
@@ -171,13 +154,6 @@ crop_database = {
             "Pod Filling": (800, 1000),
             "Maturity/Harvest": (1000, 1300)
         },
-        "water_requirements": {
-            "Seedling Stage": (1103000, 1646000), # litres/hectare
-            "Vegetative Growth": (1646000, 2200000), 
-            "Flowering": (2200000, 2755000),
-            "Pod Formation and Pod Filling": (2000000, 2200000),
-            "Maturity/Harvest":(1103000, 1646000),
-        }, 
         "pests_info": [
             {
                 "pest": "Bean Aphid (Aphis fabae)",
@@ -206,7 +182,8 @@ crop_database = {
             "Pod Formation": ["Continue irrigation.", "Monitor for pests and diseases.", "Apply fertilizers if needed."],
             "Pod Filling": ["Maintain irrigation.", "Protect against fungal infections.", "Ensure good air circulation."],
             "Maturity/Harvest": ["Reduce water before harvest.", "Harvest at the correct moisture content.", "Store properly to avoid post-harvest pests."]
-        }
+        },
+        "water_requirements": (80520000, 10447000)  # in litres per hectare       
     },
     "millet": {
         "growth_stages": {
@@ -218,13 +195,6 @@ crop_database = {
             "Grain Filling": (900, 1400),
             "Maturity/Harvest": (1400, 1900)
         },
-        "water_requirements": {
-            "Seedling Stage": (1000000, 1500000), # litres/hectare
-            "Vegetative Growth": (1500000, 2000000), 
-            "Flowering": (1500000, 2000000),
-            "Grain Filling": (1500000, 2000000),
-            "Maturity/Harvest":(1000000, 1500000),
-        }, 
         "pests_info": [
             {
                 "pest": "Millet Stem Borer (Coniesta ignefusalis)",
@@ -253,6 +223,7 @@ crop_database = {
             "Flowering": ["Ensure good pollination conditions.", "Monitor for pests and diseases.", "Maintain adequate irrigation."],
             "Grain Filling": ["Continue irrigation.", "Apply fertilizers if needed.", "Protect against fungal infections."],
             "Maturity/Harvest": ["Reduce water before harvest.", "Harvest at the right moisture content.", "Store properly to avoid post-harvest pests."]
-        }
+        },
+        "water_requirements": (6500000, 9000000)  # in litres per hectare       
     }
 }
