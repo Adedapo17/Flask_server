@@ -109,7 +109,7 @@ crop_database = {
             "Tasseling": (950, 1200),
             "Silking": (1200, 1600),
             "Grain Filling": (1600, 2400),
-            "Maturity/Harvest": (2400, 2500)
+            "Maturity/Harvest": (2400, 2700)
         },
         "pests_info": [
             {
