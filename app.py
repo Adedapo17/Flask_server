@@ -1,4 +1,4 @@
-from pandas import pd
+import pandas as pd
 from flask import Flask, request, jsonify, render_template, send_file
 from flask_cors import CORS
 from matplotlib import pyplot as plt
