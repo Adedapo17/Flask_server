@@ -1,6 +1,9 @@
+import os
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend for Matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
-from flask import Flask, request, jsonify, render_template, send_file
+from flask import Flask, render_template, request, jsonify, send_file
 from flask_cors import CORS
 from sklearn.linear_model import Ridge
 from gdd_prediction import predict_future_temperatures_and_gdd
@@ -85,6 +88,7 @@ def predict_gdd():
         print(f"Error processing request: {e}")
         return jsonify({"error": "Internal Server Error"}), 500
 
+
 @app.route('/predict_future_gdd', methods=['POST'])
 def predict_future_gdd():
     try:
@@ -145,11 +149,17 @@ def predict_future_gdd():
         ax2.legend(lines + lines2, labels + labels2, loc=0)
 
         plt.title('Daily and Cumulative Growing Degree Days (GDD)')
-        plt.savefig('gdd_plot.jpg', transparent=True)
+
+        # Ensure the static directory exists
+        if not os.path.exists('static'):
+            os.makedirs('static')
+
+        image_path = 'static/gdd_plot.jpg'
+        plt.savefig(image_path, transparent=True)
 
         response = {
             "cumulative_GDD": cumulative_GDD,
-            "graph": "gdd_plot.jpg"
+            "graph": image_path  # Return the path to the saved image
         }
 
         return jsonify(response)
@@ -160,7 +170,7 @@ def predict_future_gdd():
 
 @app.route('/get_graph', methods=['GET'])
 def get_graph():
-    return send_file('gdd_plot.png', mimetype='image/png')
+    return send_file('static/gdd_plot.jpg', mimetype='image/jpeg')
 
 if __name__ == '__main__':
     app.run(debug=True)
