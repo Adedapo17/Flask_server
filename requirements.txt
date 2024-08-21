@@ -27,4 +27,3 @@ sklearn==0.0
 threadpoolctl==3.4.0
 tzdata==2024.1
 Werkzeug==3.0.2
-python-3.10
