@@ -3,7 +3,7 @@ import pandas as pd
 from flask import Flask, request, jsonify, render_template, send_file
 from flask_cors import CORS
 from sklearn.linear_model import Ridge
-from Flask_server.gdd_prediction import predict_future_temperatures_and_gdd
+from gdd_prediction import predict_future_temperatures_and_gdd
 from your_gdd_module import calculate_gdd, predict_dates
 from your_crop_info_module import crop_database
 
