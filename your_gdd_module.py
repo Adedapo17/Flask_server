@@ -22,7 +22,6 @@ def calculate_gdd(start_date, end_date):
         return [], []
 
     gdd_data = []
-    water_data = []
     daily_data = weather_data['daily']
     
     for i in range(len(daily_data['time'])):
