@@ -13,10 +13,6 @@ from your_crop_info_module import crop_database
 app = Flask(__name__)
 CORS(app)  # Enable CORS
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route('/predict_gdd', methods=['POST'])
 def predict_gdd():
     try:
