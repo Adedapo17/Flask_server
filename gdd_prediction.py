@@ -1,3 +1,7 @@
+
+#LATEST CODE MADE CHANGES TO THE CODES ABOVE, NOW CORRECTLY MATCHING PREDICTORS TO DATA FROM THE API
+
+
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import Ridge
@@ -52,40 +56,72 @@ def fetch_weather_data(date):
     return weather_data
 
 # Function to predict future temperatures and calculate GDD
-def predict_future_temperatures_and_gdd(model_max, model_min, weather_data, base_temp=10):
+def predict_future_temperatures_and_gdd(start_date, end_date, model_max, model_min, predictors, data, base_temp):
     """
-    Predict future max and min temperatures and calculate GDD (Growing Degree Days).
-    
+    Predicts future temperatures for a user-defined date range based on the model trained
+    on previous year's data, and calculates the Growing Degree Days (GDD).
+
     Parameters:
-    - model_max: Trained Ridge regression model for max temperature.
-    - model_min: Trained Ridge regression model for min temperature.
-    - weather_data: Dictionary containing the weather predictors.
-    - base_temp: Base temperature for GDD calculation.
-    
+    - start_date (str): Start date of the prediction range in 'YYYY-MM-DD' format.
+    - end_date (str): End date of the prediction range in 'YYYY-MM-DD' format.
+    - model_max (sklearn model): Trained model for predicting max temperature.
+    - model_min (sklearn model): Trained model for predicting min temperature.
+    - predictors (list): List of predictor variable names.
+    - data (pd.DataFrame): Original dataset used for training the model.
+    - base_temp (float): Base temperature for GDD calculation.
+
     Returns:
-    - dict: Predictions including max temp, min temp, and GDD.
+    - pd.DataFrame: DataFrame with predicted max, min temperatures, daily GDD, and cumulative GDD for the future date range.
     """
-    # Convert predictors_values to DataFrame with proper feature names
-    predictors_values = pd.DataFrame([[
-        weather_data["T2M_MAX"],
-        weather_data["T2M_MIN"],
-        weather_data["WS2M_MAX"],
-        weather_data["T2M"]
-    ]], columns=["T2M_MAX", "T2M_MIN", "WS2M_MAX", "T2M"])
-
-    # Predict max and min temperatures
-    predicted_max = model_max.predict(predictors_values)[0]
-    predicted_min = model_min.predict(predictors_values)[0]
-
-    # Calculate GDD
-    gdd = max(((predicted_max + predicted_min) / 2) - base_temp, 0)
-
-    # Return predictions
-    return {
-        'predicted_max': predicted_max,
-        'predicted_min': predicted_min,
-        'GDD': gdd
-    }
+    # Convert the start and end dates to datetime
+    start_date = pd.to_datetime(start_date)
+    end_date = pd.to_datetime(end_date)
+    
+    # Generate date range for the prediction period
+    prediction_dates = pd.date_range(start=start_date, end=end_date, freq='D')
+    
+    # Initialize an empty DataFrame to store predictions and GDD
+    predictions = pd.DataFrame(index=prediction_dates)
+    
+    # Loop through each date in the prediction range
+    for date in prediction_dates:
+        # Find the corresponding day in the previous year(s)
+        previous_year_date = date - pd.DateOffset(years=1)
+        
+        # Fetch data for the previous year date from API
+        previous_year_str = previous_year_date.strftime('%Y-%m-%d')
+        weather_data = fetch_weather_data(previous_year_str)
+        
+        if weather_data:
+            # Prepare the predictor values in the correct order
+            predictors_values = np.array([
+                weather_data["T2M_MAX"],
+                weather_data["T2M_MIN"],
+                weather_data["WS2M_MAX"],
+                weather_data["T2M"]
+            ]).reshape(1, -1)
+            
+            # Predict max and min temperatures
+            predicted_max = model_max.predict(predictors_values)[0]
+            predicted_min = model_min.predict(predictors_values)[0]
+            
+            # Calculate GDD
+            gdd = max(((predicted_max + predicted_min) / 2) - base_temp, 0)
+            
+            # Store the predictions and GDD
+            predictions.loc[date, 'predicted_max'] = predicted_max
+            predictions.loc[date, 'predicted_min'] = predicted_min
+            predictions.loc[date, 'GDD'] = gdd
+        else:
+            # If previous year's data is not available, assign NaN
+            predictions.loc[date, 'predicted_max'] = np.nan
+            predictions.loc[date, 'predicted_min'] = np.nan
+            predictions.loc[date, 'GDD'] = np.nan
+    
+    # Calculate cumulative GDD
+    predictions['cumulative_GDD'] = predictions['GDD'].cumsum()
+    
+    return predictions
 
 # Load the dataset
 data = pd.read_csv("daily climate data.csv", index_col="DATE")

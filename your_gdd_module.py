@@ -1,70 +1,117 @@
-import requests
-from datetime import datetime, timedelta
+import pandas as pd
+import numpy as np
+from datetime import timedelta
+import logging
 
-def calculate_gdd(start_date, end_date):
-    url = f'https://archive-api.open-meteo.com/v1/archive?latitude=8.44&longitude=4.494&start_date={start_date}&end_date={end_date}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum&timezone=auto'
-    
+
+# Example function to calculate and predict GDD
+def calculate_and_predict_gdd(start_date, end_date, model_max, model_min, predictors, data, base_temp=10):
     try:
-        response = requests.get(url)
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching weather data: {e}")
-        return [], []
+        # Ensure start_date and end_date are in the correct format
+        logging.info(f"Initial Start Date: {start_date}, Type: {type(start_date)}")
+        logging.info(f"Initial End Date: {end_date}, Type: {type(end_date)}")
 
-    try:
-        weather_data = response.json()
-    except ValueError as e:
-        print(f"Error parsing weather data: {e}")
-        return [], []
+        if isinstance(start_date, pd.Timestamp):
+            start_date = start_date.strftime('%Y-%m-%d')
+        if isinstance(end_date, pd.Timestamp):
+            end_date = end_date.strftime('%Y-%m-%d')
 
-    if 'daily' not in weather_data or any(key not in weather_data['daily'] for key in ['time', 'temperature_2m_max', 'temperature_2m_min']):
-        print("Invalid weather data format")
-        return [], []
+        logging.info(f"Processed Start Date: {start_date}, Type: {type(start_date)}")
+        logging.info(f"Processed End Date: {end_date}, Type: {type(end_date)}")
 
-    gdd_data = []
-    daily_data = weather_data['daily']
+        prediction_dates = pd.date_range(
+            start=pd.to_datetime(start_date), 
+            end=pd.to_datetime(end_date), 
+            freq='D'
+        )
+        predictions = pd.DataFrame(index=prediction_dates)
+
+        for date in prediction_dates:
+            previous_year_date = date - pd.DateOffset(years=1)
+            previous_year_date_str = previous_year_date.strftime('%Y-%m-%d')
+            weather_data = fetch_weather_data(previous_year_date_str)
+            
+            if weather_data:
+                # Constructing the predictors DataFrame with appropriate feature names
+                predictors_values = pd.DataFrame({
+                    "T2M_MAX": [weather_data["temperature_2m_max"][0]],
+                    "T2M_MIN": [weather_data["temperature_2m_min"][0]],
+                    "WS2M_MAX": [weather_data["wind_speed_10m_max"][0]],
+                    "T2M": [weather_data["temperature_2m_mean"][0]]
+                })
+
+                predicted_max = model_max.predict(predictors_values)[0]
+                predicted_min = model_min.predict(predictors_values)[0]
+                gdd = max(((predicted_max + predicted_min) / 2) - base_temp, 0)
+
+                predictions.loc[date, 'predicted_max'] = predicted_max
+                predictions.loc[date, 'predicted_min'] = predicted_min
+                predictions.loc[date, 'GDD'] = gdd
+            else:
+                logging.warning(f"No weather data found for {previous_year_date_str}")
+                predictions.loc[date, 'GDD'] = np.nan
+
+        predictions['cumulative_GDD'] = predictions['GDD'].cumsum()
+        return predictions.reset_index().rename(columns={"index": "date"})
+
+    except Exception as e:
+        logging.error(f"Error in calculate_and_predict_gdd: {e}", exc_info=True)
+        return pd.DataFrame()  # Return an empty DataFrame on error
+
+def fetch_weather_data(date_str):
+    # Placeholder function for fetching weather data
+    logging.info(f"Fetching weather data for {date_str}")
+    # Simulate a successful API call with dummy data
+    return {
+        "temperature_2m_max": [30],
+        "temperature_2m_min": [20],
+        "wind_speed_10m_max": [5],
+        "temperature_2m_mean": [25]
+    }
+
+def predict_growth_stages(gdd_data, growth_stages):
+    """
+    Predict the dates when each growth stage is reached based on cumulative GDD.
+    Also, predict future dates for remaining stages based on average GDD accumulation.
+    """
+
+    # Sort the growth stages by their GDD start values
+    stages = sorted(growth_stages.items(), key=lambda x: x[1][0])
     
-    for i in range(len(daily_data['time'])):
-        date = daily_data['time'][i]
-        try:
-            max_temp = daily_data['temperature_2m_max'][i]
-            min_temp = daily_data['temperature_2m_min'][i]
-        except (IndexError, KeyError) as e:
-            print(f"Missing data for date {date}: {e}")
-            continue
-
-        if max_temp is None or min_temp is None:
-            print(f"Incomplete data for date {date}")
-            continue
-
-        gdd = (max_temp + min_temp) / 2 - 10
-        gdd = max(0, gdd)  # GDD cannot be negative
-        gdd_data.append({"date": date, "GDD": gdd})
-    
-    return gdd_data
-
-def predict_dates(start_date, growth_stages, gdd_data):
+    # Initialize variables to track cumulative GDD and stage achievement
     cumulative_gdd = 0
     stage_dates = {}
-    stages_reached = set()
-    
-    for gdd_entry in gdd_data:
-        cumulative_gdd += gdd_entry['GDD']
-        for stage, (start_gdd, end_gdd) in growth_stages.items():
-            if start_gdd <= cumulative_gdd < end_gdd and stage not in stages_reached:
-                stage_dates[stage] = gdd_entry['date']
-                stages_reached.add(stage)
-    
-    # Predict future dates for remaining stages
-    if gdd_data:
-        last_date = datetime.strptime(gdd_data[-1]['date'], "%Y-%m-%d")
-        daily_gdd_average = cumulative_gdd / len(gdd_data)
+    reached_stages = set()
+
+    # Iterate over the GDD data to determine when each stage is reached
+    for i, row in gdd_data.iterrows():
+        cumulative_gdd += row['GDD']
         
-        if daily_gdd_average > 0:
-            for stage, (start_gdd, end_gdd) in growth_stages.items():
-                if stage not in stage_dates:
-                    days_needed = (start_gdd - cumulative_gdd) / daily_gdd_average
-                    future_date = last_date + timedelta(days=int(days_needed))
-                    stage_dates[stage] = future_date.strftime("%Y-%m-%d")
+        # Check for each stage if cumulative GDD has reached its threshold
+        for stage, (start_gdd, end_gdd) in stages:
+            if stage not in reached_stages and cumulative_gdd >= start_gdd:
+                stage_dates[stage] = row['date']
+                reached_stages.add(stage)
+    
+    # If all stages have been reached, return the stage dates
+    if len(reached_stages) == len(stages):
+        return stage_dates
+    
+    # Estimate the future dates for the remaining stages
+    remaining_stages = [stage for stage in stages if stage[0] not in reached_stages]
+    
+    # Calculate the average daily GDD accumulation so far
+    avg_gdd_per_day = gdd_data['GDD'].mean()
+    
+    # Predict dates for remaining stages
+    last_known_date = gdd_data['date'].max()
+    
+    for stage, (start_gdd, end_gdd) in remaining_stages:
+        if cumulative_gdd < start_gdd:
+            # Calculate the number of days required to reach the start GDD of the stage
+            gdd_needed = start_gdd - cumulative_gdd
+            days_needed = gdd_needed / avg_gdd_per_day if avg_gdd_per_day > 0 else float('inf')
+            predicted_date = last_known_date + timedelta(days=round(days_needed))
+            stage_dates[stage] = predicted_date
     
     return stage_dates
