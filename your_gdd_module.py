@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from datetime import timedelta
 import logging
 
@@ -35,9 +36,7 @@ def calculate_and_predict_gdd(start_date, end_date, model_max, model_min, predic
                 # Constructing the predictors DataFrame with appropriate feature names
                 predictors_values = pd.DataFrame({
                     "T2M_MAX": [weather_data["temperature_2m_max"][0]],
-                    "T2M_MIN": [weather_data["temperature_2m_min"][0]],
-                    "WS2M_MAX": [weather_data["wind_speed_10m_max"][0]],
-                    "T2M": [weather_data["temperature_2m_mean"][0]]
+                    "T2M_MIN": [weather_data["temperature_2m_min"][0]]
                 })
 
                 predicted_max = model_max.predict(predictors_values)[0]
@@ -65,8 +64,6 @@ def fetch_weather_data(date_str):
     return {
         "temperature_2m_max": [30],
         "temperature_2m_min": [20],
-        "wind_speed_10m_max": [5],
-        "temperature_2m_mean": [25]
     }
 
 def predict_growth_stages(gdd_data, growth_stages):
@@ -115,3 +112,36 @@ def predict_growth_stages(gdd_data, growth_stages):
             stage_dates[stage] = predicted_date
     
     return stage_dates
+
+
+# New function to plot GDD data
+def plot_gdd_vs_months(gdd_data):
+    # Extracting month and year for grouping and labeling
+    gdd_data['year_month'] = gdd_data['date'].dt.to_period('M')
+
+    # Summing daily GDD by month
+    monthly_gdd = gdd_data.groupby('year_month').agg({'GDD': 'sum', 'cumulative_GDD': 'last'}).reset_index()
+    monthly_gdd['year_month'] = monthly_gdd['year_month'].dt.to_timestamp()
+
+    # Set up the plot
+    fig, ax1 = plt.subplots(figsize=(14, 7))
+
+    # Plot monthly GDD as bars
+    ax1.bar(monthly_gdd['year_month'], monthly_gdd['GDD'], width=16, color='orange', label='Monthly GDD')
+    ax1.set_xlabel('Month')
+    ax1.set_ylabel('Monthly GDD', color='orange')
+    ax1.tick_params(axis='y', labelcolor='orange')
+
+    # Creating a secondary axis for cumulative GDD
+    ax2 = ax1.twinx()
+    ax2.plot(monthly_gdd['year_month'], monthly_gdd['cumulative_GDD'], color='blue', marker='o', label='Cumulative GDD')
+    ax2.set_ylabel('Cumulative GDD', color='blue')
+    ax2.tick_params(axis='y', labelcolor='blue')
+
+    # Improve aesthetics
+    ax1.set_xticks(monthly_gdd['year_month'])  # Set x-ticks to the start of each month
+    ax1.set_xticklabels(monthly_gdd['year_month'].dt.strftime('%b %Y'))  # Display month and year
+
+    fig.suptitle('Monthly GDD and Cumulative GDD', fontsize=18)
+    fig.tight_layout()
+    plt.show()
