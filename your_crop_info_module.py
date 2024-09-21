@@ -47,12 +47,12 @@ crop_database = {
     "tomato": {
         "growth_stages": {
             "Germination": (50, 150),
-            "Seedling Stage": (151, 300),
-            "Vegetative Growth": (300, 700),
-            "Flowering": (700, 1000),
-            "Fruit Set": (1000, 1200),
-            "Fruit Growth": (1200, 1600),
-            "Maturity/Harvest": (1600, 1900)
+            "Seedling Stage": (151, 250),
+            "Vegetative Growth": (250, 500),
+            "Flowering": (500, 800),
+            "Fruit Set": (800, 1200),
+            "Fruit Growth": (1200, 1400),
+            "Maturity/Harvest": (1400, 1600)
         },
         "pests_info": [
             { 
@@ -69,19 +69,19 @@ crop_database = {
             },
             {
                 "pest": "Tomato Fruitworm (Helicoverpa zea)", 
-                "GDD_stage": (1200, 1900),
+                "GDD_stage": (1200, 1600),
                 "symptoms": "Holes in fruits, internal feeding.",
                 "control_options": ["Handpick and destroy worms.", "Use pheromone traps and biological pesticides such as Bt."]
             },
             {
                 "pest": "Whiteflies (Bemisia tabaci)",
-                "GDD_stage": (0, 1900),
+                "GDD_stage": (0, 1600),
                 "symptoms": "Yellowing leaves, honeydew, and sooty mold.",
                 "control_options": ["Implement reflective mulches to repel whiteflies.", "Use insecticidal soaps, neem oil, or introduce natural predators like Encarsia formosa."]
             },
             {
                 "pest": "Spider Mites (Tetranychus spp.)",
-                "GDD_stage": (0, 1900),
+                "GDD_stage": (0, 1600),
                 "symptoms": "Speckled leaves, webbing, leaf drop.",
                 "control_options": ["Increase humidity around plants.", "Use miticides or insecticidal soaps."]
             },
@@ -106,12 +106,12 @@ crop_database = {
     "maize": {
         "growth_stages": {
             "Germination": (50, 120),
-            "Seedling Stage": (121, 475),
-            "Vegetative Growth": (475, 950),
-            "Tasseling": (950, 1200),
-            "Silking": (1200, 1600),
-            "Grain Filling": (1600, 2400),
-            "Maturity/Harvest": (2400, 2700)
+            "Seedling Stage": (121, 500),
+            "Vegetative Growth": (500, 1000),
+            "Tasseling": (1000, 1300),
+            "Silking": (1300, 1700),
+            "Grain Filling": (1700, 2200),
+            "Maturity/Harvest": (2200, 2700)
         }, 
         "pests_info": [
             {
@@ -169,7 +169,7 @@ crop_database = {
             },
             {
                 "pest": "Mexican Bean Beetle (Epilachna varivestis)",
-                "GDD_stage": (0, 1200),
+                "GDD_stage": (0, 1300),
                 "symptoms": "Skeletonized leaves.",
                 "control_options": ["Introduce natural predators like parasitic wasps.", "Use insecticidal soaps or neem oil."]
             }
